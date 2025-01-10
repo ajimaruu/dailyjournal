@@ -111,31 +111,45 @@ include "koneksi.php";
   </div>
 </section>
 <!-- article end -->
-
-    <div class="container"><section id="gallery"class="text-center p-5 bg-danger-subtle">
-        <h1 class="fw-bold display-4 pb-3"><div>Gallery</div></h1>
+<!-- gallery start -->
+    <<div class="container">
+    <section id="gallery" class="text-center p-5 bg-danger-subtle">
+        <h1 class="fw-bold display-4 pb-3">
+            <div>Gallery</div>
+        </h1>
         <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="https://www.mascoolin.id/wp-content/uploads/2023/05/WINDAH.jpg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="https://assets.ggwp.id/2022/09/Profil-Windah-Basudara-YouTuber-Gaming-Sekaligus-BA-Team-RRQ-640x360.jpg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="https://img.idxchannel.com/media/700/images/idx/2022/10/12/Profil_dan_kekayaan_Windah_Basudara.jpg" class="d-block w-100" alt="...">
-              </div>
+                <?php
+                include "koneksi.php";
+
+                // Query data gallery dari database
+                $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                $result = $conn->query($sql);
+                $isFirst = true; // Flag untuk menentukan item pertama sebagai 'active'
+
+                while ($row = $result->fetch_assoc()) {
+                    $activeClass = $isFirst ? "active" : "";
+                    $isFirst = false;
+                ?>
+                    <div class="carousel-item <?= $activeClass ?>">
+                        <img src="img/<?= $row['gambar'] ?>" class="d-block w-100" alt="Gambar">
+                    </div>
+                <?php
+                }
+                ?>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
-          </div>
-    </section></div>
+        </div>
+    </section>
+</div>
+<!-- gallery end -->
 
     <div class="container"><section id="schedule" class="text-center p-5">
         <h1 class="fw-bold display-4 pb-3">Schedule</h1>
