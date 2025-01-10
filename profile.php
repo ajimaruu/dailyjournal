@@ -30,25 +30,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Proses foto (jika ada file yang diunggah)
-    if (!empty($_FILES['foto']['name'])) {
-        $foto_name = time() . "_" . $_FILES['foto']['name'];
-        $target_file = "img/" . $foto_name;
+// Proses foto (jika ada file yang diunggah)
+if (!empty($_FILES['foto']['name'])) {
+    $foto_name = time() . "_" . $_FILES['foto']['name'];
+    $target_file = "img/" . $foto_name;
 
-        // Simpan file ke folder img/
-        if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
-            // Hapus foto lama jika ada
-            if (!empty($user['foto'])) {
-                unlink("img/" . $user['foto']);
-            }
+    // Simpan file ke folder img/
+    if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
+        // Hapus foto lama jika ada
+        if (!empty($user['foto']) && file_exists("img/" . $user['foto'])) {
+            unlink("img/" . $user['foto']); // Hapus foto lama
+        }
 
-            // Update path foto di database
-            $update_foto_query = "UPDATE user SET foto='$foto_name' WHERE id=$user_id";
-            if (!$conn->query($update_foto_query)) {
-                die("Error: " . $conn->error); // Debugging query jika terjadi kesalahan
-            }
+        // Update path foto di database
+        $update_foto_query = "UPDATE user SET foto='$foto_name' WHERE id=$user_id";
+        if (!$conn->query($update_foto_query)) {
+            die("Error: " . $conn->error); // Debugging query jika terjadi kesalahan
         }
     }
+}
 
     // Reload data user setelah update
     $result = $conn->query("SELECT * FROM user WHERE id = $user_id");
